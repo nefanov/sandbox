@@ -1,6 +1,8 @@
 #include <stdio.h>
 
 void multiply_mantissas( uint64_t mantissa1[], uint64_t mantissa2[], int result []);
+float_128 mul(const float_128 op1, const float_128 float_to_multiply);
+// add another functions
 
 typedef union _container {
   __float128 float_val;
