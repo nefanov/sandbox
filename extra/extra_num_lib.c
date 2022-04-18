@@ -11,7 +11,14 @@ typedef ContainerF128 float_128;
 
 int main()
 {
-    
+    // init
+    // check_mul
+    // output:
+    // raw
+    // float128
+    // implement:
+    // another operations
+    // try to minimize overhead
 
     return 0;
 }
