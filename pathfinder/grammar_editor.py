@@ -34,6 +34,7 @@ class Rule:
     usage: make once before grammar finalizing
     '''
     rl = [self]
+    last_initial_rule_idx = 0
     for idx, term in enumerate(self.rhs):
       if term.repeatable:
         orig_name = term.name
@@ -42,7 +43,7 @@ class Rule:
         
         for i, rule in enumerate(rl):
           try:
-            if rule.rhs[idx].name == orig_name:
+            if rule.rhs[idx].name == orig_name and last_initial_rule_idx >= i:
               rule.rhs[idx].name = new_term_name
               rl.append(Rule(t,[t,Term(orig_name)]))
               rl.append(Rule(t,[Term("any any")]))
@@ -95,4 +96,4 @@ def test3():
 if __name__=='__main__':
   test1()
   test2()
-  #test3()
+  test3()
