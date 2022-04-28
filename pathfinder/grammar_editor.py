@@ -12,6 +12,9 @@ class Term: # for terminal and non-terminal symbols
     self.repeatable = repeatable
     self.optional = optional
     return
+
+  def __repr__(self):
+      return "Term: " + self.name
   
   def repeatable(self, cond=True):
     self.repeatable = cond
@@ -28,7 +31,7 @@ class Rule:
   def __repr__(self):
     return "(" + self.lhs.name + " --> " + " ".join([r.name for r in self.rhs]) + ")"
     
-  def make_repeatable(self):
+  def make_repeatable(self, optional=True):
     '''
     properties: idempotency
     usage: make once before grammar finalizing
@@ -38,15 +41,26 @@ class Rule:
     for idx, term in enumerate(self.rhs):
       if term.repeatable:
         orig_name = term.name
-        new_term_name = term.name + inc_unique_suffix()
+        new_term_name = term.name + '_' + inc_unique_suffix()
         t = Term(N=new_term_name)
         
         for i, rule in enumerate(rl):
           try:
             if rule.rhs[idx].name == orig_name and last_initial_rule_idx >= i:
               rule.rhs[idx].name = new_term_name
-              rl.append(Rule(t,[t,Term(orig_name)]))
-              rl.append(Rule(t,[Term("any any")]))
+              if optional:
+                rl.append(Rule(t,[t,Term(orig_name)]))
+                rl.append(Rule(t,[Term("any any")]))
+              else:
+                print(rl)
+                no_opt_name = term.name + '_' + inc_unique_suffix()
+                no_opt_name_2 = term.name + '_' + inc_unique_suffix()
+                t2 = Term(N=no_opt_name)
+                t3 = Term(N=no_opt_name_2)
+                rl.append(Rule(t,[t2,Term(orig_name)]))
+                rl.append(Rule(t2,[t,t3]))
+                rl.append(Rule(t2,[Term("any any")]))
+                rl.append(Rule(t3,[Term("any any")]))
           except:
             pass
         term.repeatable = False
@@ -93,7 +107,23 @@ def test3():
   rule = r.make_repeatable()
   print(rule)
   
+def test4():
+  print("#####Test #4#####")
+  r = Rule(Term("A"), [Term("X", repeatable=True), Term("Y")])
+  print("Make rule r optional and repeatable on X:", r)
+  rule = r.make_repeatable(optional=False)
+  print(rule)
+  
+def test5():
+  print("#####Test #5#####")
+  r = Rule(Term("A"), [Term("X"), Term("Y", repeatable=True)])
+  print("Make rule r optional and repeatable on Y:", r)
+  rule = r.make_repeatable(optional=False)
+  print(rule)
+  
 if __name__=='__main__':
   test1()
   test2()
   test3()
+  test4()
+  test5()
