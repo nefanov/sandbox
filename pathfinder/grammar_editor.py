@@ -39,6 +39,9 @@ class Grammar:
   def add_alternative(self, rule, right):
     add_rule(rule[0], right)
     return
+  
+  def finalize():
+    pass
 
 def test1():
   print(inc_unique_suffix(),inc_unique_suffix(), index)
