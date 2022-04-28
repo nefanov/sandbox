@@ -36,13 +36,15 @@ class Rule:
     rl = [self]
     for idx, term in enumerate(self.rhs):
       if term.repeatable:
+        orig_name = term.name
         new_term_name = term.name + inc_unique_suffix()
         t = Term(N=new_term_name)
-        for rule in rl:
+        
+        for i, rule in enumerate(rl):
           try:
-            if rule.rhs[idx].name == term.name:
-              rule.rhs[idx].name == new_term_name
-              rl.append(Rule(t,[t,term]))
+            if rule.rhs[idx].name == orig_name:
+              rule.rhs[idx].name = new_term_name
+              rl.append(Rule(t,[t,Term(orig_name)]))
               rl.append(Rule(t,[Term("any any")]))
           except:
             pass
@@ -83,6 +85,14 @@ def test2():
   rule = r.make_repeatable()
   print(rule)
   
+def test3():
+  print("#####Test #3#####")
+  r = Rule(Term("A"), [Term("X"), Term("Y", repeatable=True)])
+  print("Make rule r repeatable on Y:", r)
+  rule = r.make_repeatable()
+  print(rule)
+  
 if __name__=='__main__':
   test1()
   test2()
+  #test3()
