@@ -110,14 +110,28 @@ def test3():
 def test4():
   print("#####Test #4#####")
   r = Rule(Term("A"), [Term("X", repeatable=True), Term("Y")])
-  print("Make rule r optional and repeatable on X:", r)
+  print("Make rule r non-optional and repeatable on X:", r)
   rule = r.make_repeatable(optional=False)
   print(rule)
   
 def test5():
   print("#####Test #5#####")
   r = Rule(Term("A"), [Term("X"), Term("Y", repeatable=True)])
-  print("Make rule r optional and repeatable on Y:", r)
+  print("Make rule r non-optional and repeatable on Y:", r)
+  rule = r.make_repeatable(optional=False)
+  print(rule)
+  
+def test6():
+  print("#####Test #6#####")
+  r = Rule(Term("A"), [Term("X", repeatable=True), Term("Y", repeatable=True)])
+  print("Make rule r repeatable on X and Y:", r)
+  rule = r.make_repeatable()
+  print(rule)
+  
+def test7():
+  print("#####Test #7#####")
+  r = Rule(Term("A"), [Term("X", repeatable=True), Term("Y", repeatable=True)])
+  print("Make rule r non-optional and repeatable on X and Y:", r)
   rule = r.make_repeatable(optional=False)
   print(rule)
   
@@ -127,3 +141,5 @@ if __name__=='__main__':
   test3()
   test4()
   test5()
+  test6()
+  test7()
