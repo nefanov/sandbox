@@ -66,6 +66,9 @@ class Rule:
         term.repeatable = False
     return rl
     
+    def make_repeatable_and_non_optional(self):
+        return self.make_repeatable(self, optional=False)
+   
 class Grammar:
   def __init__(self):
     self.P = list()
