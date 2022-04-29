@@ -75,6 +75,7 @@ class Rule:
                     last_term = temp_t
                   rl.append(Rule(last_term, [Term("any any")]))
                 else:
+                  pass
                   #TODO: non-optional [1,n]
           except:
             pass
