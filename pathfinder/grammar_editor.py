@@ -85,24 +85,34 @@ class Rule:
         return self.make_repeatable(self, optional=False)
    
 class Grammar:
-  def __init__(self):
-    self.P = list()
+  def __init__(self, from_list=[]):
+    self.P = list() + from_list
     pass
   
-  def add_rule(self, L, R):
-    left_side = L
-    for r in R:
-      if r.repeatable:
-        pass
-      if r.optional:
-        pass
+  def new_sync_term_rule(self, left_part=Term("A"), lbr=Term("a"), rbr=Term("b"), interrelation="==", optional=True):
+    rl = []
+    if interrelation is "==":
+      new_term_l = Term(left_part.name + '_' + inc_unique_suffix())
+      new_term_l2 = Term(left_part.name + '_' + inc_unique_suffix())
+      new_term_r = Term(left_part.name + '_' + inc_unique_suffix())
+      new_term_r2 = Term(left_part.name + '_' + inc_unique_suffix())
+      new_term_r3 = Term(left_part.name + '_' + inc_unique_suffix())
+      rl.append(Rule(left_part, [new_term_l, new_term_r]))
+      rl.append(Rule(new_term_l, [new_term_l2, left_part]))
+      rl.append(Rule(new_term_l2, [lbr]))
+      rl.append(Rule(new_term_r, [new_term_r2, new_term_r3]))
+      rl.append(Rule(new_term_r2, [rbr]))
+      rl.append(Rule(new_term_r3, [Term("any any")]))
+    if optional:
+      rl.append(Rule(left_part, [Term("any any")]))
+      
+    self.P += rl  
+    return rl
     
-    self.P += rules_chain
-    return rules_chain
-  
-  def add_alternative(self, rule, right):
-    add_rule(rule[0], right)
-    return
+    
+    
+    self.P += rl
+    return rl
   
   def finalize():
     pass
@@ -160,6 +170,14 @@ def test8():
   rule = r.make_repeatable()
   print(rule)
   
+def test9():
+  print("#####Test #9#####")
+  print("grammar for a^nb^n, n in [0, +inf)")
+  P = Grammar()
+  res = P.new_sync_term_rule()
+  print(res)
+  
+  
 if __name__=='__main__':
   test1()
   test2()
@@ -169,3 +187,4 @@ if __name__=='__main__':
   test6()
   test7()
   test8()
+  test9()
