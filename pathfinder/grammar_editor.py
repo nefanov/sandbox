@@ -7,17 +7,19 @@ def inc_unique_suffix():
   return str(index)
 
 class Term: # for terminal and non-terminal symbols
-  def __init__(self, N="A", repeatable=False, optional=False):
+  def __init__(self, N="A", repeatable=False, optional=False, repeat_limit=-1):
     self.name = N
     self.repeatable = repeatable
+    self.repeat_limit = repeat_limit # -1 means "inf", or any positive number
     self.optional = optional
     return
 
   def __repr__(self):
       return "Term: " + self.name
   
-  def repeatable(self, cond=True):
+  def repeatable(self, cond=True, limit="inf"):
     self.repeatable = cond
+    self.repeat_limit = limit
     return
 
   def optional(self, cond=True):
@@ -48,19 +50,32 @@ class Rule:
           try:
             if rule.rhs[idx].name == orig_name and last_initial_rule_idx >= i:
               rule.rhs[idx].name = new_term_name
-              if optional:
-                rl.append(Rule(t,[t,Term(orig_name)]))
-                rl.append(Rule(t,[Term("any any")]))
+              if term.repeat_limit == -1:
+                if optional:
+                  rl.append(Rule(t,[t,Term(orig_name)]))
+                  rl.append(Rule(t,[Term("any any")]))
+                else:
+                  print(rl)
+                  no_opt_name = term.name + '_' + inc_unique_suffix()
+                  no_opt_name_2 = term.name + '_' + inc_unique_suffix()
+                  t2 = Term(N=no_opt_name)
+                  t3 = Term(N=no_opt_name_2)
+                  rl.append(Rule(t,[t2,Term(orig_name)]))
+                  rl.append(Rule(t2,[t,t3]))
+                  rl.append(Rule(t2,[Term("any any")]))
+                  rl.append(Rule(t3,[Term("any any")]))
               else:
-                print(rl)
-                no_opt_name = term.name + '_' + inc_unique_suffix()
-                no_opt_name_2 = term.name + '_' + inc_unique_suffix()
-                t2 = Term(N=no_opt_name)
-                t3 = Term(N=no_opt_name_2)
-                rl.append(Rule(t,[t2,Term(orig_name)]))
-                rl.append(Rule(t2,[t,t3]))
-                rl.append(Rule(t2,[Term("any any")]))
-                rl.append(Rule(t3,[Term("any any")]))
+                if optional:
+                  last_term = rule.rhs[idx]
+                  temp_name = rule.rhs[idx]
+                  for i in range(term.repeat_limit):
+                    temp_name = term.name + '_' + inc_unique_suffix()
+                    temp_t = Term(temp_name)
+                    rl.append(Rule(last_term, [temp_t, Term(orig_name)]))
+                    last_term = temp_t
+                  rl.append(Rule(last_term, [Term("any any")]))
+                else:
+                  #TODO: non-optional [1,n]
           except:
             pass
         term.repeatable = False
@@ -138,6 +153,13 @@ def test7():
   rule = r.make_repeatable(optional=False)
   print(rule)
   
+def test8():
+  print("#####Test #8#####")
+  r = Rule(Term("A"), [Term("X", repeatable=True, repeat_limit=2), Term("Y")])
+  print("Make rule r repeatable 2 times on X:", r)
+  rule = r.make_repeatable()
+  print(rule)
+  
 if __name__=='__main__':
   test1()
   test2()
@@ -146,3 +168,4 @@ if __name__=='__main__':
   test5()
   test6()
   test7()
+  test8()
