@@ -55,7 +55,6 @@ class Rule:
                   rl.append(Rule(t,[t,Term(orig_name)]))
                   rl.append(Rule(t,[Term("any any")]))
                 else:
-                  print(rl)
                   no_opt_name = term.name + '_' + inc_unique_suffix()
                   no_opt_name_2 = term.name + '_' + inc_unique_suffix()
                   t2 = Term(N=no_opt_name)
