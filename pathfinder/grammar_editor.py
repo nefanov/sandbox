@@ -108,11 +108,7 @@ class Grammar:
       
     self.P += rl  
     return rl
-    
-    
-    
-    self.P += rl
-    return rl
+   
   
   def finalize():
     pass
