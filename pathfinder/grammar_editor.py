@@ -91,7 +91,7 @@ class Grammar:
   
   def new_sync_term_rule(self, left_part=Term("A"), lbr=Term("a"), rbr=Term("b"), interrelation="==", optional=True):
     rl = []
-    if interrelation is "==":
+    if interrelation == "==":
       new_term_l = Term(left_part.name + '_' + inc_unique_suffix())
       new_term_l2 = Term(left_part.name + '_' + inc_unique_suffix())
       new_term_r = Term(left_part.name + '_' + inc_unique_suffix())
