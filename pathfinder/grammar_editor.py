@@ -14,6 +14,7 @@ class Term: # for terminal and non-terminal symbols
     self.optional = optional
     return
 
+
   def __repr__(self):
       return "Term: " + self.name
   
@@ -89,20 +90,42 @@ class Grammar:
     self.P = list() + from_list
     pass
   
-  def new_sync_term_rule(self, left_part=Term("A"), lbr=Term("a"), rbr=Term("b"), interrelation="==", optional=True):
+  def new_sync_term_rule(self, left_part=Term("A"), lbr=Term("a"), rbr=Term("b"),
+                         interrelation="==", optional=True, between=[
+                                                                    Term("any any"),
+                                                                    Term("any any"),
+                                                                    Term("any any")
+          ]):
     rl = []
     if interrelation == "==":
-      new_term_l = Term(left_part.name + '_' + inc_unique_suffix())
-      new_term_l2 = Term(left_part.name + '_' + inc_unique_suffix())
-      new_term_r = Term(left_part.name + '_' + inc_unique_suffix())
-      new_term_r2 = Term(left_part.name + '_' + inc_unique_suffix())
-      new_term_r3 = Term(left_part.name + '_' + inc_unique_suffix())
-      rl.append(Rule(left_part, [new_term_l, new_term_r]))
-      rl.append(Rule(new_term_l, [new_term_l2, left_part]))
-      rl.append(Rule(new_term_l2, [lbr]))
-      rl.append(Rule(new_term_r, [new_term_r2, new_term_r3]))
-      rl.append(Rule(new_term_r2, [rbr]))
-      rl.append(Rule(new_term_r3, [Term("any any")]))
+      if between:
+        new_term_l = Term(left_part.name + '_' + inc_unique_suffix())
+        new_term_l2 = Term(left_part.name + '_' + inc_unique_suffix())
+        new_term_r = Term(left_part.name + '_' + inc_unique_suffix())
+        new_term_r2 = Term(left_part.name + '_' + inc_unique_suffix())
+        new_term_r3 = Term(left_part.name + '_' + inc_unique_suffix())
+        lt = Term("Term__" + lbr.name)
+        rl.append(Rule(left_part, [new_term_l, new_term_r]))
+        rl.append(Rule(new_term_l, [new_term_l2, left_part]))
+        rl.append(Rule(new_term_l2, [lt, between[0]]))
+        rl.append(Rule(lt, [lbr]))
+        rl.append(Rule(left_part, [between[1], new_term_r3]))
+
+        rl.append(Rule(new_term_r, [between[2], new_term_r2]))
+        rl.append(Rule(new_term_r2, [rbr]))
+        rl.append(Rule(new_term_r3, [Term("any any")]))
+      else:
+        new_term_l = Term(left_part.name + '_' + inc_unique_suffix())
+        new_term_l2 = Term(left_part.name + '_' + inc_unique_suffix())
+        new_term_r = Term(left_part.name + '_' + inc_unique_suffix())
+        new_term_r2 = Term(left_part.name + '_' + inc_unique_suffix())
+        new_term_r3 = Term(left_part.name + '_' + inc_unique_suffix())
+        rl.append(Rule(left_part, [new_term_l, new_term_r]))
+        rl.append(Rule(new_term_l, [new_term_l2, left_part]))
+        rl.append(Rule(new_term_l2, [lbr]))
+        rl.append(Rule(new_term_r, [new_term_r2, new_term_r3]))
+        rl.append(Rule(new_term_r2, [rbr]))
+        rl.append(Rule(new_term_r3, [Term("any any")]))
     if optional:
       rl.append(Rule(left_part, [Term("any any")]))
       
@@ -168,9 +191,16 @@ def test8():
   
 def test9():
   print("#####Test #9#####")
+  print("grammar for (A(A(A(..(B)..)C)C)C), |(|==|)|==n, braces seq is ok, n in [0, +inf),A,B,C")
+  P = Grammar()
+  res = P.new_sync_term_rule(between=[Term("A"),Term("B"),Term("C")])
+  print(res)
+
+def test10():
+  print("#####Test #10#####")
   print("grammar for a^nb^n, n in [0, +inf)")
   P = Grammar()
-  res = P.new_sync_term_rule()
+  res = P.new_sync_term_rule(between=None)
   print(res)
   
   
@@ -184,3 +214,4 @@ if __name__=='__main__':
   test7()
   test8()
   test9()
+  test10()
