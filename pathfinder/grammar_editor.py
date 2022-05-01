@@ -95,6 +95,10 @@ class Grammar:
                                                                     Term("any any"),
                                                                     Term("any any"),
                                                                     Term("any any")
+          ],
+                                                            facings=[
+                                                              Term("any any"),
+                                                              Term("any any")
           ]):
     rl = []
     if interrelation == "==":
@@ -108,11 +112,17 @@ class Grammar:
         rl.append(Rule(left_part, [new_term_l, new_term_r]))
         rl.append(Rule(new_term_l, [new_term_l2, left_part]))
         rl.append(Rule(new_term_l2, [lt, between[0]]))
-        rl.append(Rule(lt, [lbr]))
+        if facings:
+          pass
+        else:
+          rl.append(Rule(lt, [lbr]))
         rl.append(Rule(left_part, [between[1], new_term_r3]))
 
         rl.append(Rule(new_term_r, [between[2], new_term_r2]))
-        rl.append(Rule(new_term_r2, [rbr]))
+        if facings:
+          pass
+        else:
+          rl.append(Rule(new_term_r2, [rbr]))
         rl.append(Rule(new_term_r3, [Term("any any")]))
       else:
         new_term_l = Term(left_part.name + '_' + inc_unique_suffix())
@@ -191,16 +201,16 @@ def test8():
   
 def test9():
   print("#####Test #9#####")
-  print("grammar for (A(A(A(..(B)..)C)C)C), |(|==|)|==n, braces seq is ok, n in [0, +inf),A,B,C")
+  print("grammar for (D(D(D(..(B)..)C)C)C), |(|==|)|==n, braces seq is ok, n in [0, +inf),D,B,C are non-terminals")
   P = Grammar()
-  res = P.new_sync_term_rule(between=[Term("A"),Term("B"),Term("C")])
+  res = P.new_sync_term_rule(between=[Term("D"),Term("B"),Term("C")], facings=None)
   print(res)
 
 def test10():
   print("#####Test #10#####")
   print("grammar for a^nb^n, n in [0, +inf)")
   P = Grammar()
-  res = P.new_sync_term_rule(between=None)
+  res = P.new_sync_term_rule(between=None, facings=None)
   print(res)
   
   
