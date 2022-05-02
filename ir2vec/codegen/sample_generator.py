@@ -8,7 +8,7 @@ def generate_code(indexes, array_len):
              "\nint arr[" + str(array_len) + "];\n"\
              "int main() {\n"
     text = [prefix]
-    text.append("\tint left;\n");
+    text.append("\tint left;\n")
     for idx in indexes:
         text.append("\tleft = arr["+str(idx)+"];\n")
     text.append("\treturn 0;\n}\n")
