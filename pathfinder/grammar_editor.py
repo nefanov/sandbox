@@ -1,3 +1,4 @@
+from tabulate import tabulate
 TOKEN_LIST = ["any any","any assign_const"]
 
 index = 0;
@@ -144,7 +145,16 @@ class Grammar:
     self.P += rl  
     return rl
    
-  
+  def print(self, table=True):
+    if table: # required: tabulate
+      content = [[i, p.lhs.name, ",".join([z.name for z in p.rhs])] for i, p in enumerate(self.P)]
+      header = ["No", "left side", "right side"]
+      print(tabulate(content, headers=header, tablefmt='orgtbl'))
+    else:
+      for idx, p in enumerate(self.P):
+        print(idx, p)
+
+    return
   def finalize(self):
     pass
 
@@ -240,6 +250,13 @@ def test11():
   res = P.new_sync_term_rule(between=[Term("D"),Term("B"),Term("C")], facings=[Term("E"), Term("F")])
   print(res)
 
+def test12():
+  print("#####Test #12#####")
+  g = Grammar([Rule(Term("A"),[Term("B"),Term("B")]) , Rule(Term("B"),[Term("b")])])
+  g.print(table=True)
+  g.print(table=False)
+
+
 
 if __name__ == '__main__':
   test1()
@@ -253,3 +270,4 @@ if __name__ == '__main__':
   test9()
   test10()
   test11()
+  test12()
