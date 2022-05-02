@@ -96,10 +96,7 @@ class Grammar:
                                                                     Term("any any"),
                                                                     Term("any any")
           ],
-                                                            facings=[
-                                                              Term("any any"),
-                                                              Term("any any")
-          ]):
+                                                            facings=None):
     rl = []
     if interrelation == "==":
       if between:
@@ -113,16 +110,21 @@ class Grammar:
         rl.append(Rule(new_term_l, [new_term_l2, left_part]))
         rl.append(Rule(new_term_l2, [lt, between[0]]))
         if facings:
-          pass
+          lt2 = Term("Term__" + lbr.name + "2")
+          rl.append(Rule(lt, [facings[0], lt2]))
+          rl.append(Rule(lt2, [lbr]))
         else:
           rl.append(Rule(lt, [lbr]))
         rl.append(Rule(left_part, [between[1], new_term_r3]))
 
         rl.append(Rule(new_term_r, [between[2], new_term_r2]))
         if facings:
-          pass
+          rt2 = Term("Term__" + rbr.name + "2")
+          rl.append(Rule(new_term_r2, [rt2, facings[1]]))
+          rl.append(Rule(rt2, [rbr]))
         else:
           rl.append(Rule(new_term_r2, [rbr]))
+
         rl.append(Rule(new_term_r3, [Term("any any")]))
       else:
         new_term_l = Term(left_part.name + '_' + inc_unique_suffix())
@@ -230,9 +232,16 @@ def test10():
   P = Grammar()
   res = P.new_sync_term_rule(between=None, facings=None)
   print(res)
-  
 
-if __name__=='__main__':
+def test11():
+  print("#####Test #11#####")
+  print("grammar for E(DE(DE(DE(..E(B)F..)FC)FC)FC), |(|==|)|==n, braces seq is ok, n in [0, +inf),D,B,C,E,F are non-terminals")
+  P = Grammar()
+  res = P.new_sync_term_rule(between=[Term("D"),Term("B"),Term("C")], facings=[Term("E"), Term("F")])
+  print(res)
+
+
+if __name__ == '__main__':
   test1()
   test2()
   test3()
@@ -243,3 +252,4 @@ if __name__=='__main__':
   test8()
   test9()
   test10()
+  test11()
