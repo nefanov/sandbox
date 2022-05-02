@@ -143,7 +143,25 @@ class Grammar:
     return rl
    
   
-  def finalize():
+  def finalize(self):
+    pass
+
+
+class Editor:
+  def newGrammar(self, rules=[], ):
+    self.G(rules)
+
+  def add_rule_from_config(self, config):
+    rl = [Rule(Term(config['L']['name']), [Term(cont['name'],
+                                                       repeatable=cont['repeatable'],
+                                                       optional=cont['optional'] ) for cont in config['R']])]
+    if (config['make_repeatable']):
+      rl = rl[0].make_repeatable(True if config['make_optional'] else False)
+
+  def saveGrammar(self):
+    pass
+
+  def printGrammar(self):
     pass
 
 def test1():
@@ -213,7 +231,7 @@ def test10():
   res = P.new_sync_term_rule(between=None, facings=None)
   print(res)
   
-  
+
 if __name__=='__main__':
   test1()
   test2()
