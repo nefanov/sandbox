@@ -26,11 +26,18 @@ class Term: # for terminal and non-terminal symbols
 
   def optional(self, cond=True):
     self.optional = cond
-    
+
+
 class Rule:
-  def __init__(self, L, R):
+  '''
+  L: left side
+  R: right side
+  tag: default | manual (written by programmer) | auto (generated)
+  '''
+  def __init__(self, L, R, tag="default"):
     self.lhs = L
     self.rhs = R
+    self.tag = tag
     
   def __repr__(self):
     return "(" + self.lhs.name + " --> " + " ".join([r.name for r in self.rhs]) + ")"
@@ -85,7 +92,8 @@ class Rule:
     
     def make_repeatable_and_non_optional(self):
         return self.make_repeatable(self, optional=False)
-   
+
+
 class Grammar:
   def __init__(self, from_list=[]):
     self.P = list() + from_list
@@ -145,16 +153,16 @@ class Grammar:
     self.P += rl  
     return rl
    
-  def print(self, table=True):
+  def print(self, table=True, tablefmt='orgtbl', tab_filter=[]):
     if table: # required: tabulate
-      content = [[i, p.lhs.name, ",".join([z.name for z in p.rhs])] for i, p in enumerate(self.P)]
-      header = ["No", "left side", "right side"]
-      print(tabulate(content, headers=header, tablefmt='orgtbl'))
+      content = [[i, p.lhs.name, ",".join([z.name for z in p.rhs]), p.tag]  for i, p in enumerate(self.P) if p.tag not in tab_filter]
+      header = ["No", "left side", "right side", "tag"]
+      print(tabulate(content, headers=header, tablefmt=tablefmt))
     else:
       for idx, p in enumerate(self.P):
         print(idx, p)
-
     return
+
   def finalize(self):
     pass
 
@@ -256,6 +264,12 @@ def test12():
   g.print(table=True)
   g.print(table=False)
 
+def test13():
+  print("#####Test #13#####")
+  g = Grammar([Rule(Term("A"),[Term("B"),Term("B")],tag="manual") , Rule(Term("B"),[Term("b")])])
+  g.print(table=True, tab_filter=[])
+  g.print(table=True, tab_filter=["default"])
+
 
 
 if __name__ == '__main__':
@@ -271,3 +285,4 @@ if __name__ == '__main__':
   test10()
   test11()
   test12()
+  test13()
