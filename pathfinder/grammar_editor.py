@@ -163,8 +163,40 @@ class Grammar:
         print(idx, p)
     return
 
-  def finalize(self):
-    pass
+
+  def finalize(self, flat=True, sequence=[]):
+    '''
+    :param flat: is this rule set represents only one-level sentential form in non-terminals ? If no, there may be some cross-level relations
+    :return: full set of grammar rules
+    '''
+    if len(sequence) == 1:
+      return self.P
+    rhs = []
+    while(len(sequence)>1):
+      next_sequence = []
+      for i, x in enumerate(sequence):
+        rhs.append(x) # rules, which left sides are positions in right side of the new rule
+        if len(rhs) == 2:
+          found = [item for item in self.P if (len(item.rhs) == 2 and
+                                               item.rhs[0].name == rhs[0].lhs.name and
+                                               item.rhs[1].name == rhs[1].lhs.name)]
+          if len(found) != 0:
+            temp_t = found[0].lhs
+          else:
+            temp_t = Term("N_" + inc_unique_suffix())
+          r = Rule(temp_t, [r.lhs for r in rhs], tag="auto")
+          self.P += [r]
+          rhs.clear()
+          next_sequence.append(r)
+      if len(rhs) == 1:
+        next_sequence.append(sequence[-1])
+        rhs.clear()
+      sequence = next_sequence
+      next_sequence = []
+
+
+
+
 
 
 class Editor:

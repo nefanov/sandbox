@@ -1,6 +1,5 @@
 from grammar_editor import *
 
-
 def test1():
     print("#####Test #1#####")
     print(inc_unique_suffix(), inc_unique_suffix(), index)
@@ -101,6 +100,18 @@ def test13():
     g.print(table=True, tab_filter=["default"])
 
 
+def test14():
+    print("#####Test #14#####")
+    a = Rule(Term("A"), [Term("a")], tag="manual")
+    b = Rule(Term("B"), [Term("b")])
+    c = Rule(Term("C"), [Term("c")])
+    g = Grammar([a, b, c])
+    g.print(table=True, tab_filter=[])
+    g.finalize(sequence=[a, b, c])
+    print("After grammar finalizing:")
+    g.print(table=True, tab_filter=[])
+
+
 if __name__ == '__main__':
     test1()
     test2()
@@ -115,3 +126,4 @@ if __name__ == '__main__':
     test11()
     test12()
     test13()
+    test14()
