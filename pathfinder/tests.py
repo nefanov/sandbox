@@ -55,8 +55,8 @@ def test7():
 
 def test8():
     print("#####Test #8#####")
-    r = Rule(Term("A"), [Term("X", repeatable=True, repeat_limit=2), Term("Y")])
-    print("Make rule r repeatable 2 times on X:", r)
+    r = Rule(Term("A"), [Term("X", repeatable=True, optional=True, repeat_limit=20), Term("Y")])
+    print("Make rule r repeatable 20 times on optional X:", r)
     rule = r.make_repeatable()
     print(rule)
 
