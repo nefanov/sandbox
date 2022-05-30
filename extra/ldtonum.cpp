@@ -45,6 +45,23 @@ void cvt(long double ldd) {
         if (i == 7)
             cout<<"------------------\n";
     }
+    
+    for (int i=0;i<16;i++)
+    {
+        printf("  %02d ",  i );
+            cout<<"| ";
+        if (i == 7)
+            cout<<"-- |";
+    }
+    cout<<endl;
+    for (int i=0;i<16;i++)
+    {
+        printf("0x%02x ",  (unsigned)bytes[i] & 0xff );
+            cout<<"| ";
+        if (i == 7)
+            cout<<"-- |";
+    }
+    cout<<endl;
     return;
 }
 
