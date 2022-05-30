@@ -6,12 +6,55 @@ C#, VB, Swift, Pascal, Fortran, Haskell, Objective-C, Assembly, HTML, CSS, JS, S
 Code, Compile, Run and Debug online from anywhere in world.
 
 *******************************************************************************/
+
+/******************************************************************************
+
+Welcome to GDB Online.
+GDB online is an online compiler and debugger tool for C, C++, Python, Java, PHP, Ruby, Perl,
+C#, VB, Swift, Pascal, Fortran, Haskell, Objective-C, Assembly, HTML, CSS, JS, SQLite, Prolog.
+Code, Compile, Run and Debug online from anywhere in world.
+
+*******************************************************************************/
 #include <iostream>
 #include <cstdio>
 
 using namespace std;
 
 void cvt(long double ldd) {
+    printf("%Lf\n", ldd);
+    unsigned long* u64v;
+    int* i32v;
+    char* bytes;
+    bytes = reinterpret_cast<char*>(&ldd);
+    
+    for (int i=0;i<16;i++)
+    {
+        printf("  %02d ",  i );
+            cout<<"| ";
+        if (i == 7)
+            cout<<"-- |";
+    }
+    cout<<endl;
+    for (int i=0;i<16;i++)
+    {
+        printf("0x%02X ",  (unsigned)bytes[i] & 0xff );
+            cout<<"| ";
+        if (i == 7)
+            cout<<"-- |";
+    }
+    cout<<endl;
+    for (int i=0;i<16;i++)
+    {
+        printf(" %03u ",  (unsigned)bytes[i] & 0xff );
+            cout<<"| ";
+        if (i == 7)
+            cout<<"-- |";
+    }
+    cout<<endl;
+    return;
+}
+
+void __cvt_verbose(long double ldd) {
     unsigned long* u64v;
     int* i32v;
     char* bytes;
