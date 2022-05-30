@@ -19,7 +19,7 @@ void cvt(long double ldd) {
     printf("========uint64=========\n");
     for (int i=0;i<2;i++)
     {
-        printf("%d:\t%lx\n", i,  (unsigned)u64v[i] & 0xffffffffffffffff );
+        printf("%d:\t%016lx\n", i,  (unsigned)u64v[i] & 0xffffffffffffffff );
         if (i % 2)
             cout<<"------------------\n";
         if (i == 7)
@@ -29,7 +29,7 @@ void cvt(long double ldd) {
     printf("========int=========\n");
     for (int i=0;i<4;i++)
     {
-        printf("%d:\t%x\n", i,  (unsigned)i32v[i] & 0xffffffff );
+        printf("%d:\t%08x\n", i,  (unsigned)i32v[i] & 0xffffffff );
         if (i % 2)
             cout<<"------------------\n";
         if (i == 7)
@@ -39,7 +39,7 @@ void cvt(long double ldd) {
     printf("========bytes=========\n");
     for (int i=0;i<16;i++)
     {
-        printf("%d:\t%x\n", i,  (unsigned)bytes[i] & 0xff );
+        printf("%d:\t%02x\n", i,  (unsigned)bytes[i] & 0xff );
         if (i % 2)
             cout<<"------------------\n";
         if (i == 7)
@@ -50,6 +50,6 @@ void cvt(long double ldd) {
 
 int main()
 {
-    cvt(2.0L);
+    cvt(2.0);
     return 0;
 }
