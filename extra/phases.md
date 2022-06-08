@@ -17,3 +17,8 @@
 >>>><<<<<>>>>PHASE: fixshortbranch
 >>>>
 >>>><<<<<>>>>PHASE: cgemit
+
+
+CgMoveRegArgs
+
+CgRegAlloc
