@@ -2,7 +2,7 @@ If it is suitable, use bool AArch64CGFunc::GenerateCompareWithZeroInstruction(Op
 1) use it for cmp w0,0 ???
 2) directly rewrite for use of pair cmp, br
 
-if (a<b) --->
+if (a ** < ** b) --->
 
  cmp     w0, 0
-        **bge**     .L6 # should be picked
+        ** bge **     .L6 # should be picked
