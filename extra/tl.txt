@@ -5,4 +5,16 @@ If it is suitable, use bool AArch64CGFunc::GenerateCompareWithZeroInstruction(Op
 if (a ** < ** b) --->
 
  cmp     w0, 0
-        ** bge **     .L6 # should be picked
+        ** bge **     .L6 # should be picked      
+        
+a<=b bgt 
+
+==  bne
+
+!= beq
+
+ >= blt
+ 
+ > ble     .L6
+ 
+ Если условие под IF не выполняется --> b* на метку c обработкой false
