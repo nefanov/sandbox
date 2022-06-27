@@ -11,3 +11,20 @@ int main() {
         }
         return 0;
 }
+
+/*
+The correct values from arm64-gcc:
+.LC2:
+        .word   0
+        .word   0
+        .word   0
+        .word   2147450880
+.LC3:
+        .word   0
+        .word   0
+        .word   0
+        .word   2147418112
+
+
+
+*/
