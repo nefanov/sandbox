@@ -1,0 +1,5 @@
+bb.AppendInsn(GetCG()->BuildInstruction<AArch64Insn>(cmpImmOp, rflag, lengthOpnd, immValueEight));
+
+bb.AppendInsn(GetCG()->BuildInstruction<AArch64Insn>(MOP_blt, rflag, GetOrCreateLabelOperand(jumpLabIdx)));
+
+bb.SetKind(BB::kBBIf);
